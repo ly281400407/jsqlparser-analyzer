@@ -4,7 +4,13 @@ import com.qto.analyzer.expression.DecisionExpressionAnlyzer;
 import com.qto.data.TableConditionData;
 import com.qto.exception.ColumOperationException;
 import com.qto.exception.NoSupportColumOperationClassException;
+import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.operators.relational.ItemsList;
+import net.sf.jsqlparser.expression.operators.relational.NamedExpressionList;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
+
+import java.util.List;
 
 /**
  * Description： TODO
@@ -23,7 +29,30 @@ public class NamedExpressionListItemsAnalyzer implements ItemsListAnalyzer {
 
     public ItemsList analyzer(ItemsList itemsList, TableConditionData tableConditionData) throws ColumOperationException, NoSupportColumOperationClassException {
 
+        if(!ObjectUtils.allNotNull(itemsList) || !ObjectUtils.allNotNull(tableConditionData)){
+            return itemsList;
+        }
 
-        return null;
+        if(itemsList instanceof NamedExpressionList){
+
+            NamedExpressionList namedExpressionList = (NamedExpressionList) itemsList;
+            List<Expression> expressionList = namedExpressionList.getExpressions();
+
+            if(!CollectionUtils.isNotEmpty(expressionList)){
+                return itemsList;
+            }
+
+            for(Expression expression : expressionList){
+                if(!ObjectUtils.allNotNull(expression)){
+                    continue;
+                }
+                expression = decisionExpressionAnlyzer.analyzer(expression, tableConditionData);
+            }
+            namedExpressionList.setExpressions(expressionList);
+            itemsList = namedExpressionList;
+
+        }
+
+        return itemsList;
     }
 }
