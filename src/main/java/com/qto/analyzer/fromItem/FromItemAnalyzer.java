@@ -1,6 +1,8 @@
 package com.qto.analyzer.fromItem;
 
 import com.qto.data.TableConditionData;
+import com.qto.exception.ColumOperationException;
+import com.qto.exception.NoSupportColumOperationClassException;
 import net.sf.jsqlparser.statement.select.FromItem;
 
 /**
@@ -12,6 +14,6 @@ import net.sf.jsqlparser.statement.select.FromItem;
  */
 public interface FromItemAnalyzer {
 
-    public FromItem analyzer(FromItem fromItem, TableConditionData tableConditionData);
+    public FromItem analyzer(FromItem fromItem, TableConditionData tableConditionData) throws ColumOperationException, NoSupportColumOperationClassException;
 
 }

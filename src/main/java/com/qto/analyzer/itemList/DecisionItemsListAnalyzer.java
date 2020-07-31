@@ -1,6 +1,5 @@
 package com.qto.analyzer.itemList;
 
-import com.qto.analyzer.fromItem.DecisionFromItemAnalyzer;
 import com.qto.data.TableConditionData;
 import net.sf.jsqlparser.expression.operators.relational.ItemsList;
 
